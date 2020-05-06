@@ -53,10 +53,10 @@ def make_chains(text_string):
     # append None to the end of our word list to set stopping point
     words.append(None)
 
-    for i, word in enumerate(words[:-2]):
+    for i, word in enumerate(words[:-3]):
 
-        k = (words[i], words[i + 1])
-        v = words[i + 2]
+        k = (words[i], words[i + 1], words[i + 2])
+        v = words[i + 3]
 
         chains[k] = chains.get(k,[]) + [v]
         
@@ -85,12 +85,12 @@ def make_text(chains):
     # choose a random key from {chains}
     k = choice(list(chains.keys()))
     # store in variable 'words' the randomly chosen key from line above
-    words = [k[0], k[1]]
+    words = [k[0], k[1], k[2]]
     # choose ONE random value of chains[k] & store in variable "word"
     word = choice(chains[k])
 
     while word is not None:
-        k = (k[1], word)
+        k = (k[1], k[2], word)
         words.append(word)
         word = choice(chains[k])
 
