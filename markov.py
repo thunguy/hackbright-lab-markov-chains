@@ -1,18 +1,24 @@
 """Generate Markov text from text files."""
 
 from random import choice
+import sys
+
 
 
 def open_and_read_file(file_path):
+
     """Take file path as string; return text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
 
-    # your code goes here
+    file = open(file_path).read()
+    return file
 
-    return "Contents of your file as one long string"
+# print(open_and_read_file(sys.argv[1]))
+# print(type(open_and_read_file(sys.argv[1])))
+
 
 
 def make_chains(text_string):
@@ -41,31 +47,67 @@ def make_chains(text_string):
     """
 
     chains = {}
+    
+    words = text_string.split()
 
-    # your code goes here
+    # append None to the end of our word list to set stopping point
+    words.append(None)
+
+    for i, word in enumerate(words[:-2]):
+
+        k = (words[i], words[i + 1])
+        v = words[i + 2]
+
+        chains[k] = chains.get(k,[]) + [v]
+        
+        # if key not in chains:
+        #     chains[k] = []
+
+        # chains[k].append(v)
 
     return chains
+
+# print(make_chains(open_and_read_file(sys.argv[1])))
+
+
+
+def print_chains(chains):
+    for k, v in chains.items():
+        print(f"{k}: {v}")
+
+print(print_chains(make_chains(open_and_read_file(sys.argv[1]))))
+
 
 
 def make_text(chains):
     """Return text from chains."""
 
-    words = []
+    # randomly choose key (pair of words, line 55) from {chains}
+    k = choice(list(chains.keys()))
+    # store in variable 'words' the randomly generated key pair from line 83
+    words = [k[0], k[1]]
+    # randomly choose ONE value of chains[k] & store in variable "word"
+    word = choice(chains[k])
 
-    # your code goes here
+    while word is not None:
+        k = (k[1], word)
+        words.append(word)
+        word = choice(chains[k])
 
-    return " ".join(words)
+    return " ".join(words) 
 
 
-input_path = "green-eggs.txt"
+print(make_text(make_chains(open_and_read_file(sys.argv[1]))))
 
-# Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+# input_path = sys.argv[1]
 
-# Get a Markov chain
-chains = make_chains(input_text)
+# # Open the file and turn it into one long string
+# input_text = open_and_read_file(input_path)
 
-# Produce random text
-random_text = make_text(chains)
+# # Get a Markov chain
+# chains = make_chains(input_text)
 
-print(random_text)
+# # Produce random text
+# random_text = make_text(chains)
+
+# print(random_text)
