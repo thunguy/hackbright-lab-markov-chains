@@ -5,7 +5,7 @@ import sys
 
 
 
-def open_and_read_file(file_path):
+def open_and_read_file(filenames):
 
     """Take file path as string; return text as string.
 
@@ -13,9 +13,12 @@ def open_and_read_file(file_path):
     the file's contents as one string of text.
     """
 
-    file = open(file_path).read()
-    return file
+    text = ""
+    for filename in filenames:
+        text += open(filename).read()
+        open(filename).close()
 
+    return text
 # print(open_and_read_file(sys.argv[1]))
 # print(type(open_and_read_file(sys.argv[1])))
 
@@ -75,7 +78,7 @@ def print_chains(chains):
     for k, v in chains.items():
         print(f"{k}: {v}")
 
-print(print_chains(make_chains(open_and_read_file(sys.argv[1]))))
+print(print_chains(make_chains(open_and_read_file(sys.argv[1:]))))
 
 
 
@@ -97,7 +100,7 @@ def make_text(chains):
     return " ".join(words) 
 
 
-print(make_text(make_chains(open_and_read_file(sys.argv[1]))))
+print(make_text(make_chains(open_and_read_file(sys.argv[1:]))))
 
 # input_path = sys.argv[1]
 
