@@ -13,12 +13,15 @@ def open_and_read_file(filenames):
     the file's contents as one string of text.
     """
 
-    text = ""
-    for filename in filenames:
-        text += open(filename).read()
-        open(filename).close()
+    # text = ""
+    # for filename in filenames:
+    #     text += open(filename).read()
+    #     open(filename).close()
 
-    return text
+    # return text
+
+    return " ".join([open(filename).read() for filename in filenames])
+    
 # print(open_and_read_file(sys.argv[1]))
 # print(type(open_and_read_file(sys.argv[1])))
 
